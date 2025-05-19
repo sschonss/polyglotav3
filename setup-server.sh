@@ -53,18 +53,18 @@ if [ -f ".env.example" ]; then
   echo "NODE_ENV=production" >> .env
   
   # Configura a URL de sinalização
-  echo "REACT_APP_SIGNALING_URL=https://$DOMAIN/signal" >> .env
+  echo "REACT_APP_SIGNALING_URL=http://$DOMAIN/signal" >> .env
   
   # Configura CORS
-  echo "CORS_ORIGIN=https://$DOMAIN" >> .env
+  echo "CORS_ORIGIN=http://$DOMAIN" >> .env
 else
   # Cria um arquivo .env básico se .env.example não existir
   cat > .env <<EOL
 DOMAIN=$DOMAIN
 EMAIL=$EMAIL
 NODE_ENV=production
-REACT_APP_SIGNALING_URL=https://$DOMAIN/signal
-CORS_ORIGIN=https://$DOMAIN
+REACT_APP_SIGNALING_URL=http://$DOMAIN/signal
+CORS_ORIGIN=http://$DOMAIN
 EOL
 fi
 
@@ -87,6 +87,6 @@ echo "--- Iniciando containers ---"
 docker-compose up -d
 
 echo "=== Setup concluído! ==="
-echo "Agora é necessário configurar o DNS para apontar $DOMAIN para o IP deste servidor."
-echo "Após fazer isso, os certificados SSL serão obtidos automaticamente."
-echo "O aplicativo estará disponível em https://$DOMAIN"
+echo "O aplicativo está disponível em http://$DOMAIN"
+echo "Você pode acessá-lo diretamente pelo IP $DOMAIN no navegador Google Chrome."
+echo "Lembre-se que o aplicativo requer o Chrome para funcionamento completo da transcrição de voz."
