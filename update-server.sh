@@ -25,8 +25,14 @@ fi
 echo "--- Parando containers Docker ---"
 docker-compose down
 
-echo "--- Reconstruindo e iniciando containers ---"
-docker-compose up -d --build
+echo "--- Limpando imagens antigas ---"
+docker system prune -f
+
+echo "--- Reconstruindo imagens do zero ---"
+docker-compose build --no-cache
+
+echo "--- Iniciando os novos containers ---"
+docker-compose up -d
 
 if [ $? -ne 0 ]; then
   echo "ERRO: Falha ao iniciar os containers. Verifique os logs."
