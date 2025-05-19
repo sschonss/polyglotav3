@@ -4,12 +4,19 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const ip = require('ip');
 
+// Carregar variáveis de ambiente se existirem
+require('dotenv').config();
+
+// Obter configurações de CORS da variável de ambiente ou usar valor padrão
+const corsOrigin = process.env.CORS_ORIGIN || '*';
+console.log(`CORS configurado para aceitar origens: ${corsOrigin}`);
+
 // Criar aplicativo Express
 const app = express();
 
-// Configurar CORS para aceitar conexões de qualquer origem (necessário para ngrok)
+// Configurar CORS
 app.use(cors({
-  origin: '*',
+  origin: corsOrigin,
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true
 }));
@@ -67,7 +74,7 @@ const server = http.createServer(app);
 // Configurar Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: corsOrigin,
     methods: ['GET', 'POST', 'OPTIONS'],
     credentials: true
   },
@@ -131,7 +138,10 @@ io.on('connection', (socket) => {
   });
 });
 
+// Usar a porta definida nas variáveis de ambiente ou o padrão 4000
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Servidor de sinalização rodando na porta ${PORT}`);
+  console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Servidor acessível em: ${ip.address()}:${PORT}`);
 });
